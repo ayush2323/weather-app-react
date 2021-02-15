@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react';
+import ShowTemperature from './ShowTemperature'
 import './App.css';
 
 function App() {
@@ -64,7 +65,7 @@ function App() {
       setHideClass("data_hide")
     } else {
       try {
-        let url = `http://api.openweathermap.org/data/2.5/weather?q=` + input + `&units=metric&appid=7d276015941d7127fb5fc5b290907321`
+        let url = `https://api.openweathermap.org/data/2.5/weather?q=${input}&units=metric&appid=7d276015941d7127fb5fc5b290907321`
         const response = await fetch(url)
         const data = await response.json()
         const arrData = [data]
@@ -74,9 +75,6 @@ function App() {
         if (tempMood === "Clear") {
           setWeather('sun')
           setColor('#eccc68')
-        } else if (tempMood === "Clouds") {
-          setWeather('cloud')
-          setColor('#f1f2f6')
         } else if (tempMood === "Rain") {
           setWeather('rain')
           setColor('#a4b0be')
@@ -101,23 +99,10 @@ function App() {
                   <h1>Weather App</h1>
                     <form className="temp_form">
                         <input value={input} type="text" name="" id="cityName" placeholder="Enter Your City Nmae" autoComplete="off" onChange={eventChange} />
-                        <input type="submit" value="search" id="submitBtn" onClick={getInfo} />
+                        <input type="submit" value="Search" id="submitBtn" onClick={getInfo} />
                     </form>
                 </div>
-
-                <div className="tempInformation">
-                    <div className="top_layer">
-                        <p id="day">{day}</p>
-                        <p id="today_date">{date}</p>
-                    </div>
-                    <div className="main_layer">
-                        <p id="city_name">{output}</p>
-                        <div className={"middle_layer " + hideClass}>
-                            <p id="temp"><span id="temp_real_val">{temperature}</span><sup>o</sup>C</p>
-                            <p id="temp_status"><i className={'fas fa-' + weather} style={{color: color}}></i></p>
-                        </div>
-                    </div>
-                </div>
+                <ShowTemperature day={day} date={date} output={output} hideClass={hideClass} temperature={temperature} weather={weather} color={color} />
             </div>
         </div>
     </div>
